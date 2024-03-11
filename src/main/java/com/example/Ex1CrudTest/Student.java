@@ -1,21 +1,25 @@
 package com.example.Ex1CrudTest;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Table
 @Data
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 public class Student {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(nullable = false, unique = true)
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String surname;
-    private boolean isWorking;
+
+    @Column(nullable = false)
+    private Boolean isWorking;
 }

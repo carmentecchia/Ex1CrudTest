@@ -7,42 +7,34 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/student")
 public class StudentController {
     @Autowired
-    StudentRepository studentRepository;
+    public StudentService studentService;
     @Autowired
-    private StudentService studentService;
+    public StudentRepository studentRepository;
 
-    @PutMapping("/add")
-    public void createStudent(@RequestBody Student student){
-        studentRepository.save(student);
+    @PostMapping("/create-new-student")
+    public Student createNewStudent(@RequestBody Student student){
+        return studentRepository.save(student);
     }
 
-    @GetMapping("/list")
-    public List<Student> getLista(){
+    @GetMapping("/get-all-students")
+    public List<Student> listOfStudents() {
         return studentRepository.findAll();
     }
 
-    @GetMapping("/getStudent/{id}")
-    public Student getStudent(@PathVariable Long id){
-        Optional<Student> student = studentRepository.findById(id);
-        if (student.isPresent()){
-            return student.get();
-        }else {
-            return null;
-        }
+    @GetMapping("/get-student-by-id/{id}")
+    public Optional<Student> findStudentById(@PathVariable Long id){
+        return studentRepository.findById(id);
     }
-    @PutMapping("/updateStudent/{id}")
-    public void updateStudent(@PathVariable Long id,@RequestBody Student student ){
-        student.setId(id);
-        studentRepository.save(student);
+
+    @PatchMapping("/update-value/{id}")
+    public Student updateValue(@PathVariable Long id, @RequestParam Boolean isWorking){
+        return studentService.changeIsWorking(id, isWorking);
     }
-    @PutMapping("/{id}/working")
-    public void setIsWorking(@PathVariable Long id, @PathVariable boolean working){
-        studentService.setIsWorking(id,working);
-    }
-    @DeleteMapping("/delete/{id}")
+
+    @DeleteMapping("/delete-student/{id}")
     public void deleteStudent(@PathVariable Long id){
         studentRepository.deleteById(id);
     }
